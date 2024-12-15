@@ -10,16 +10,13 @@ CONFIG += c++11
 
 SOURCES += \
     NoiseVisualizer.cpp \
-    main.cpp \
-    mainwindow.cpp
+    main.cpp
 
 HEADERS += \
-    NoiseVisualizer.h \
-    mainwindow.h
+    NoiseVisualizer.h
 
 FORMS += \
-    NoiseVisualizer.ui \
-    mainwindow.ui
+    NoiseVisualizer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
