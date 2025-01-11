@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <QBuffer>
 
+class QCustomPlot;
+
 namespace Ui {
 class NoiseVisualizer;
 }
@@ -28,10 +30,11 @@ private slots:
 
 private:
     Ui::NoiseVisualizer *ui;
-    QAudioInput *audioInput;
-    QBuffer *audioBuffer;
-    QProgressBar *levelBar;
-    QTimer *timer;
+    QAudioInput *audioInput = nullptr;
+    QBuffer *audioBuffer = nullptr;
+    QProgressBar *levelBar = nullptr;
+    QTimer *timer = nullptr;
+    QCustomPlot *plot = nullptr;
 };
 
 #endif // NOISEVISUALIZER_H

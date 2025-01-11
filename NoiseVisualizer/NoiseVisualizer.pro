@@ -1,5 +1,6 @@
 QT       += core gui
 QT       += widgets multimedia
+QT += printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -10,10 +11,12 @@ CONFIG += c++11
 
 SOURCES += \
     NoiseVisualizer.cpp \
+    QCustomPlot/qcustomplot/qcustomplot.cpp \
     main.cpp
 
 HEADERS += \
-    NoiseVisualizer.h
+    NoiseVisualizer.h\
+    QCustomPlot/qcustomplot/qcustomplot.h
 
 FORMS += \
     NoiseVisualizer.ui
