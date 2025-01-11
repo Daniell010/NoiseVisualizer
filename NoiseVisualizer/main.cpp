@@ -1,4 +1,3 @@
-#include "mainwindow.h"
 #include "NoiseVisualizer.h"
 #include <QApplication>
 
