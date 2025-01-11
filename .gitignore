@@ -1,0 +1,89 @@
+# Общие временные файлы
+*.obj
+*.o
+*.lo
+*.la
+*.al
+*.libs
+*.so
+*.so.*
+*.dll
+*.dylib
+*.exe
+*.out
+*.app
+*.pch
+*.pdb
+*.idb
+*.class
+
+# Файлы Qt
+*.moc
+*.qrc
+*.qmlc
+*.qrc.depends
+*.qm
+*.ts
+
+# CMake и Makefile
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+build/
+build-*/
+
+# Файлы qmake
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.autosave
+*.pro~
+*.pro#
+*.qbs~
+
+# Логи и временные файлы
+*.log
+*.temp
+*.bak
+*.swp
+*.directory
+
+# Конфигурация IDE
+*.idea/
+*.vscode/
+.DS_Store
+
+# Резервные файлы
+*.backup
+*.orig
+*.rej
+
+# Бинарные и временные артефакты
+bin/
+debug/
+release/
+*.ipch
+*.iobj
+*.ipdb
+*.obj
+*.tlog
+*.lastbuildstate
+*.ilk
+*.idb
+*.pdb
+
+# QtCreator специфические каталоги
+.qtcreator/
+.qmake.stash
+.qtcreator/devices.xml
+.qtcreator/cmake.xml
+*.creator.*
+
+# Windows специфическое
+Thumbs.db
+desktop.ini
+
+# Mac специфическое
+.DS_Store
