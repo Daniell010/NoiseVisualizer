@@ -1,6 +1,8 @@
 #ifndef NOISEVISUALIZER_H
 #define NOISEVISUALIZER_H
 
+#include "ManagerTcp.h"
+
 #include <QWidget>
 #include <QAudioInput>
 #include <QVBoxLayout>
@@ -26,15 +28,17 @@ public:
     ~NoiseVisualizer();
 
 private slots:
-    void updateSoundLevel();
+    void onNewDataReceived(const QByteArray &data);  // Обработчик новых данных от ManagerTcp
+    void updateSoundLevel();  // Обновление уровня звука
 
 private:
     Ui::NoiseVisualizer *ui;
-    QAudioInput *audioInput = nullptr;
-    QBuffer *audioBuffer = nullptr;
-    QProgressBar *levelBar = nullptr;
-    QTimer *timer = nullptr;
-    QCustomPlot *plot = nullptr;
+    QProgressBar *levelBar;
+    QTimer *timer;
+    QCustomPlot *plot;
+    QAudioInput *audioInput;
+    QBuffer *audioBuffer;
+    ManagerTcp *managerTcp;   // Объект ManagerTcp
 };
 
 #endif // NOISEVISUALIZER_H

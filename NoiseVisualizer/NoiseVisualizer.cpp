@@ -7,16 +7,16 @@ NoiseVisualizer::NoiseVisualizer(QWidget *parent) :
     ui(new Ui::NoiseVisualizer),
     levelBar(new QProgressBar(this)),
     timer(new QTimer(this)),
-    plot(new QCustomPlot(this)) // Новый график
+    plot(new QCustomPlot(this)),
+    managerTcp(new ManagerTcp(this)) // Инициализация ManagerTcp
 {
     ui->setupUi(this);
-    // Настройка пользовательского интерфейса
+
     auto layout = new QVBoxLayout(this);
     layout->addWidget(levelBar);
     layout->addWidget(plot); // Добавляем график в интерфейс
     levelBar->setRange(0, 100);
 
-    // Настройка QCustomPlot
     plot->addGraph();
     plot->xAxis->setLabel("Time");
     plot->yAxis->setLabel("Amplitude");
@@ -45,6 +45,12 @@ NoiseVisualizer::NoiseVisualizer(QWidget *parent) :
     audioBuffer->open(QIODevice::ReadWrite);
     audioInput->start(audioBuffer);
 
+    // Настройка TCP-соединения
+    connect(managerTcp, &ManagerTcp::newDataReceived, this, &NoiseVisualizer::onNewDataReceived);
+
+    // Подключение к серверу
+    managerTcp->connectToServer("localhost", 12345); // Укажите адрес и порт сервера
+
     // Обновление уровня звука каждые 10 мс
     connect(timer, &QTimer::timeout, this, &NoiseVisualizer::updateSoundLevel);
     timer->start(10);
@@ -58,42 +64,33 @@ NoiseVisualizer::~NoiseVisualizer()
     delete audioBuffer;
     delete levelBar;
     delete plot;
+    delete managerTcp;  // Удаляем ManagerTcp
 }
 
-void NoiseVisualizer::updateSoundLevel()
+void NoiseVisualizer::onNewDataReceived(const QByteArray &data)
 {
-    if (!audioBuffer->isOpen()) {
-        levelBar->setValue(0);
-        return;
-    }
-
-    QByteArray audioData = audioBuffer->data(); // Читаем данные из буфера
-    if (audioData.isEmpty()) {
-        levelBar->setValue(levelBar->value() - 1);
-        return;
-    }
-
-    // Преобразование данных в массив qint16
-    QVector<double> x, y; // Данные для графика
+    // Данные получены, обновляем график
+    QVector<double> x, y;
     qint16 maxAmplitude = 0;
-    const qint16 *data = reinterpret_cast<const qint16 *>(audioData.data());
-    int size = audioData.size() / 2; // Количество 16-битных сэмплов
+    const qint16 *dataPtr = reinterpret_cast<const qint16 *>(data.data());
+    int size = data.size() / 2;
 
     for (int i = 0; i < size; ++i) {
-        qint16 sample = data[i];
+        qint16 sample = dataPtr[i];
         maxAmplitude = std::max(maxAmplitude, static_cast<qint16>(std::abs(sample)));
 
         x.append(i);          // Время (индекс сэмпла)
         y.append(sample);     // Амплитуда
     }
 
-    // Обновление графика
     plot->graph(0)->setData(x, y);
-    plot->replot(); // Перерисовка графика
+    plot->replot();
 
-    // Обновление прогресс-бара
     double level = (static_cast<double>(maxAmplitude) / 32767.0) * 100.0;
     levelBar->setValue(static_cast<int>(level));
-    audioBuffer->reset();
+}
 
+void NoiseVisualizer::updateSoundLevel()
+{
+    // Если нужно, можно добавить логику для аудио уровня, но для TCP обновления теперь достаточно использовать onNewDataReceived
 }
