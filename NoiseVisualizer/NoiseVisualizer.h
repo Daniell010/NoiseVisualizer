@@ -2,20 +2,16 @@
 #define NOISEVISUALIZER_H
 
 #include <QWidget>
-#include <QAudioInput>
-#include <QVBoxLayout>
 #include <QProgressBar>
 #include <QTimer>
-#include <QWidget>
-#include <QDebug>
-#include <algorithm>
-#include <QBuffer>
+#include <QAudioSource>
+#include <QIODevice>
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class NoiseVisualizer; }
+QT_END_NAMESPACE
 
 class QCustomPlot;
-
-namespace Ui {
-class NoiseVisualizer;
-}
 
 class NoiseVisualizer : public QWidget
 {
@@ -30,11 +26,13 @@ private slots:
 
 private:
     Ui::NoiseVisualizer *ui;
-    QAudioInput *audioInput = nullptr;
-    QBuffer *audioBuffer = nullptr;
-    QProgressBar *levelBar = nullptr;
-    QTimer *timer = nullptr;
-    QCustomPlot *plot = nullptr;
+    QProgressBar *levelBar;
+    QTimer *timer;
+    QCustomPlot *plot;
+
+
+    QAudioSource *audioSource = nullptr;
+    QIODevice *audioBuffer = nullptr;
 };
 
 #endif // NOISEVISUALIZER_H

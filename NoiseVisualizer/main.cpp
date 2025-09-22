@@ -1,11 +1,13 @@
-#include "NoiseVisualizer.h"
 #include <QApplication>
+
+#include "clientaudiosender.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    NoiseVisualizer n;
+    QCoreApplication a(argc, argv);
 
-    n.show();
+    ClientAudioSender client;
+    client.start("127.0.0.1", 45454); // локальный сервер на порту 45454
+
     return a.exec();
 }
